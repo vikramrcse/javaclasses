@@ -1,0 +1,31 @@
+package Threadprg;
+
+public class synchronizationeg implements Runnable {
+	int count;
+	public synchronized void incre()
+	{
+		count=count+1;
+	}
+	@Override
+	public void run() 
+	{
+		for(int i=0;i<2000;i++)
+				{
+					incre();
+				}
+	}
+	public static void main(String[] args) throws InterruptedException  {
+		synchronizationeg o1=new synchronizationeg();
+		Thread t1=new Thread(o1);
+		Thread t2=new Thread(o1);
+		t1.start();
+		t2.start();
+		t1.join();
+		t2.join();
+		System.out.println(o1.count);
+		
+		
+		
+	}
+
+}

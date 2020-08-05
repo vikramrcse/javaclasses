@@ -1,0 +1,46 @@
+package Threadprg;
+public class ipc {
+	double balance=10000.0;
+	double wamt;
+	public synchronized double withdraw(double wamt) 
+	{	this.wamt=wamt;
+		if(balance<wamt)
+		{
+			System.out.println("balance is low unable to withdrw");
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				 
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			balance =balance-wamt;
+			System.out.println("after withdrawl  "+ balance);
+		}
+		return balance;
+	}
+	public synchronized void deposit(double amt)
+	{    
+		balance =balance+amt;
+		 if(wamt<balance)
+			 notify();
+	}
+public static void main(String[] args) {
+	ipc o=new ipc();
+	new Thread() {
+		public void run() {
+			o.withdraw(1000);
+		}
+	}.start();
+	
+	new Thread() {
+		public void run() {
+			o.withdraw(15000);
+		}
+	}.start();
+	
+	
+}
+}
